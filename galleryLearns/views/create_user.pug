@@ -14,3 +14,8 @@ block content
             label(for="password")
             input#password.form-control(type="password", name="password" placeholder="Password")
         button.btn.btn-primary(type="submit") Submit
+
+    if errors
+        ul 
+            for error in errors 
+                li!= error.msg

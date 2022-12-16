@@ -1,7 +1,5 @@
 var express = require('express');
 var router = express.Router();
-const bcrypt = require("bcrypt");
-const { body, validationResult } = require("express-validator");
 const user = require("../controllers/userController");
 
 /* GET users listing. */
