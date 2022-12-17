@@ -3,7 +3,9 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
-const sessions = require('express-session');
+const session = require('express-session');
+const MongoStore = require('connect-mongo');
+const auth = require('./controllers/auth');
 
 const mongoose = require('mongoose');
 const mongoDB = `mongodb+srv://${process.env.USER}:${process.env.PASS}@cluster0.2kktyhz.mongodb.net/?retryWrites=true&w=majority`; 
@@ -22,11 +24,14 @@ app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
 
 const oneDay = 1000 * 60 * 60 * 24;
-app.use(sessions({
-    secret: "thisismysecrctekeyfhrgfgrfrty84fwir767",
-    saveUninitialized:true,
+app.use(session({
     cookie: { maxAge: oneDay, sameSite: 'lax' },
     resave: false,
+    saveUninitialized:true,
+    secret: "thisismysecrctekeyfhrgfgrfrty84fwir767",
+    store: MongoStore.create({
+      mongoUrl: mongoDB,
+    })
 }));
 
 app.use(logger('dev'));
@@ -34,10 +39,15 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(auth);
+
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/login', loginRouter);
+
+app.use(auth);
+
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

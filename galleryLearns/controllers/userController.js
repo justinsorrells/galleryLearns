@@ -4,12 +4,14 @@ const User = require('../model/user');
 const async = require('async');
 
 /* GET users listing. */
+// Render accout creation page when an HTTP GET request is made 
 exports.create_user_get = function (req, res, next) {
   res.render('create_user', {
     title: 'Create Account',
   });
 }
 
+// Process the form submission when an HTTP POST request is made
 exports.create_user_post = [
   // Validate and sanitize Data
   body("email")
@@ -34,14 +36,16 @@ exports.create_user_post = [
   // Process data
   (req, res, next) => {
 
+    // Create a new user document using the User model
     const user = new User({
       email: req.body.email,
       username: req.body.username,
       password: req.body.password,
     });  
 
+    // Create an errors object from the Form Validation Results
     const errors = validationResult(req);
-
+    // If there are errors then render the page again and display the errors
     if (!errors.isEmpty()) {
       res.render('create_user', {
         title: 'Create Account',
@@ -50,6 +54,7 @@ exports.create_user_post = [
       return;
     }
 
+    // Utilize bcrypt to encrypt the user's password then store it using mongoose
     bcrypt.hash(user.password, 10, function(err, hash) {
       if (err) {
         res.render('create_user', {
@@ -60,6 +65,7 @@ exports.create_user_post = [
       }
       user.password = hash;
       
+      // Call for username and email separately 
       async.parallel(
         {
           user(callback) {
@@ -73,6 +79,7 @@ exports.create_user_post = [
           if (err) { 
             return next(err);
           }
+          // Check to see if the username or email already exist
           if (results.user) {
             res.render('create_user', {
               title: 'Create Account',
@@ -87,6 +94,8 @@ exports.create_user_post = [
             });
             return
           }
+          // If all of the information is valid then create the new account
+          // Store it in MongoDB
           user.save((err) => {
             if (err) {
               return next(err);
