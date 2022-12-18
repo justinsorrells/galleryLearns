@@ -1,0 +1,12 @@
+extends layout 
+
+block content 
+    if result
+        div.container
+            h1= title 
+            p!= result.author 
+            p!= result.date 
+            if result.headerImg
+                img.img-fluid(src=(result.headerImg))
+            if postContent 
+                div!= postContent

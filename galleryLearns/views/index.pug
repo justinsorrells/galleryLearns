@@ -2,5 +2,13 @@ extends layout
 
 block content
   h1= title
-  p Welcome to #{title}
-  p Hello world
+  p Welcome to my blog
+  p Please enjoy
+  if result
+    for res in result  
+      div.card 
+        img(src=(res.headerImg))
+        div.card-body 
+          h5.card-title!= res.title 
+          p.card-text!= res.summary 
+          a.btn.btn-primary(href=("/posts/" + res._id)) View Article

@@ -1,0 +1,30 @@
+extends layout 
+
+block content 
+    script(type="module" src="/javascript/markdownPreviewer.js")
+    script(src="https://cdn.jsdelivr.net/npm/marked/marked.min.js")
+    h1= title
+
+    form(method='POST' action='')
+        div.form-group 
+            label(for="title") Title
+            input#title.form-control(type="text" placeholder="Title" name="title")
+        div.form-group 
+            label(for="category") Category
+            select#category.form-control(type="text" placeholder="Category" name="category")
+                option 
+                option(value="Web") Web
+                option(value="Real Programming Language") Real Programming Language
+                option(value="Test") Test
+        div.form-group 
+            label(for="summary")
+            input#summary.form-control(type="text" placeholder="Summary" name="summary")
+        div.form-group 
+            label(for="headerImg")
+            input#headerImg.form-control(type="text" placeholder="Link to Header Image" name="headerImg")
+        div.form-group 
+            label(for="content")
+            textarea#content.form-control(placeholder="Enter markdown here" rows="4" name="content")
+        button.btn.btn-primary(type="submit") Submit
+
+        div#preview.container(style="width: 1000px; height: 500px; border: 1px solid black;")
