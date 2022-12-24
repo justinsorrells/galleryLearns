@@ -16,6 +16,20 @@ exports.login_get = function (req, res, next) {
 // To do add form validation to escape() user input
 exports.login_post = function(req, res, next) {
     // Search the database for a user
+    if (!req.body.username) {
+        res.render('login', {
+            title: "Login",
+            errors: [{"msg": "must include username"}]
+        });
+        return;
+    }
+    if (!req.body.password) {
+        res.render('login', {
+            title: "Login",
+            errors: [{"msg": "must include password"}]
+        });
+        return;
+    }
     User.findOne({ username: req.body.username }).exec((err, user) => {
         // If there is an error with the query then return an error
         if (err) {
@@ -35,6 +49,13 @@ exports.login_post = function(req, res, next) {
                 return next(err);
             }
             // If the comparison was successful then store the session id with the user's information
+            if (!result) {
+                res.render('login', {
+                    title: "Login",
+                    error: [{"msg": "Invalid Username or Password"}]
+                })
+                return;
+            }
             if (result) {
                 user.cookie = req.session.id;
                 // Save the new session to the database
@@ -42,9 +63,7 @@ exports.login_post = function(req, res, next) {
                     if (err) {
                         return next(err);
                     }
-                    res.render('index', {
-                        title: "Congrats on the login!",
-                    })
+                    res.redirect('/');
                     return;
                 });
             }

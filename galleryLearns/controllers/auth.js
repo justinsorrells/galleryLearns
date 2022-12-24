@@ -8,7 +8,7 @@ const express = require('express');
 module.exports = function validateSession(req, res, next) {
     // If the request url is '/login' or '/users/create' account 
     // Allow the user to advance
-    if (req.url === '/login' || req.url == '/users/create') {
+    if (req.url === '/login' || req.url == '/users/create' || req.url == '/logout') {
         return next()
     }
 

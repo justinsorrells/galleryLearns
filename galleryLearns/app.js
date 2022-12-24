@@ -6,6 +6,7 @@ var logger = require('morgan');
 const session = require('express-session');
 const MongoStore = require('connect-mongo');
 const auth = require('./controllers/auth');
+const checkAdmin = require('./controllers/checkAdmin');
 
 const mongoose = require('mongoose');
 const mongoDB = `mongodb+srv://${process.env.USER}:${process.env.PASS}@cluster0.2kktyhz.mongodb.net/?retryWrites=true&w=majority`; 
@@ -17,6 +18,7 @@ var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 const loginRouter = require('./routes/login');
 const moduleRouter = require('./routes/module');
+const logoutRouter = require('./routes/logout');
 
 var app = express();
 
@@ -35,20 +37,23 @@ app.use(session({
     })
 }));
 
+
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+
+
+app.use('/login', loginRouter);
+app.use('/logout', logoutRouter);
+app.use('/users', usersRouter);
+
+app.use(checkAdmin);
 app.use(auth);
 
-
 app.use('/', indexRouter);
-app.use('/users', usersRouter);
-app.use('/login', loginRouter);
 app.use('/module', moduleRouter);
-
-
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

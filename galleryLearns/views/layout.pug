@@ -14,10 +14,13 @@ html
         i.fa-solid.fa-bars
       nav#navigation
         ul#navlist.nav.flex-column 
-          li.nav-item
-            a(href="/") Home 
-          li.nav-item(href="/login") Learn 
-          li.nav-item(href="/login") Profile 
-          li.nav-item(href="/login") Community
-    main.container
+          a(href="/")
+            li.nav-item Home 
+          if privileges
+            if privileges == 'admin'
+              a(href="/module/create")
+                li.nav-item Create
+          a(href="/logout")
+            li.nav-item Logout
+    main.container(style="max-width: 800px")
       block content

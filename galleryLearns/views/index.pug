@@ -1,14 +1,16 @@
 extends layout
-
 block content
   h1= title
   p Welcome to my blog
   p Please enjoy
-  if result
-    for res in result  
-      div.card 
-        img(src=(res.headerImg))
-        div.card-body 
-          h5.card-title!= res.title 
-          p.card-text!= res.summary 
-          a.btn.btn-primary(href=("/posts/" + res._id)) View Article
+  div.d-flex.flex-column.justify-content-center.align-items-center(style="width: 100%;")
+    div(style="max-width: 700px;")
+      if result
+        - result.sort(function(a, b) {return b.date - a.date;});
+        for res in result  
+          div.card(style="margin: 1rem 0; width: 100%;")
+            img.img-fluid(src=(res.headerImg))
+            div.card-body 
+              h5.card-title!= res.title 
+              p.card-text!= res.summary 
+              a.btn.btn-primary(href=("/posts/" + res._id)) View Article

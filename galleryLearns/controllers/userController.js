@@ -100,7 +100,7 @@ exports.create_user_post = [
             if (err) {
               return next(err);
             }
-            res.redirect("/users/create");
+            res.redirect("/login");
           })
         }
       )

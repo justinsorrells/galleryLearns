@@ -2,10 +2,14 @@ extends layout
 
 block content 
     if result
-        div.container
+        div.container-fluid
             h1= title 
             p!= result.author 
-            p!= result.date 
+            p!= result.date
+            if privileges
+                if privileges == 'admin'
+                    form(method="GET" action=("/module/edit/" + result._id))
+                        button.btn.btn-primary(style="margin: 1rem 0; padding: .5rem 2rem;") Edit 
             if result.headerImg
                 img.img-fluid(src=(result.headerImg))
             if postContent 
