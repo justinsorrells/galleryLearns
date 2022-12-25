@@ -6,5 +6,6 @@ const indexRouter = require('../controllers/indexController');
 router.get('/', indexRouter.index_get);
 
 router.get('/posts/:id', indexRouter.index_post_get);
+router.post('/posts/:id/comment', indexRouter.comment_post);
 
 module.exports = router;

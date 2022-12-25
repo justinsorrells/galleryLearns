@@ -14,3 +14,18 @@ block content
                 img.img-fluid(src=(result.headerImg))
             if postContent 
                 div!= postContent
+            hr
+            form(method="POST" action=("/posts/" + result._id + "/comment"))
+                div.form-group
+                    textarea(name="newComment" style="width: 100%" rows=5 placeholder="Write a comment")
+                button.btn.btn-primary(type="Submit") Submit 
+            if comments
+                hr
+                for x in comments
+                    div.card.my-2
+                        div.card-body.py-4.d-flex.flex-column.align-items-start
+                            div.card-text.py-1
+                                != x.comment
+                            div.card-text.py-1.px-1.d-flex.justify-content-between(style="width: 100%;")
+                                p!= " - " + x.user.username 
+                                p!= x.date
