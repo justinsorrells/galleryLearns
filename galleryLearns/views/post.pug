@@ -3,6 +3,10 @@ extends layout
 block content 
     if result
         div.container-fluid
+            if errors 
+                ul 
+                    for error in errors     
+                        li!= error.msg
             h1= title 
             p!= result.author 
             p!= result.date
