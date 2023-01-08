@@ -5,11 +5,6 @@ window.addEventListener('DOMContentLoaded', function() {
     const nav = document.querySelector("#navigation");
     
     let toggle = 0;
-
-    console.log(navToggle);
-    console.log(nav);
-    
-    console.log("script loaded");
     
     navToggle.addEventListener("click", function(e) {
         if (toggle == 0) {
